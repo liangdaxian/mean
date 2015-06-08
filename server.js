@@ -5,7 +5,8 @@
 var init = require('./config/init')(),
 	config = require('./config/config'),
 	mongoose = require('mongoose'),
-	chalk = require('chalk');
+	chalk = require('chalk'),
+	servicesMgr = require('./app/services/ServiceManager');
 
 /**
  * Main application entry file.
@@ -31,6 +32,8 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
+// start services
+
 // Start the app by listening on <port>
 app.listen(config.port);
 
@@ -47,3 +50,5 @@ if (process.env.NODE_ENV === 'secure') {
 	console.log(chalk.green('HTTPs:\t\t\t\ton'));
 }
 console.log('--');
+
+servicesMgr.start();
