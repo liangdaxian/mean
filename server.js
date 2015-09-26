@@ -5,8 +5,7 @@
 var init = require('./config/init')(),
 	config = require('./config/config'),
 	mongoose = require('mongoose'),
-	chalk = require('chalk'),
-	servicesMgr = require('./app/services/ServiceManager');
+	chalk = require('chalk');
 
 /**
  * Main application entry file.
@@ -14,15 +13,17 @@ var init = require('./config/init')(),
  */
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db.uri, config.db.options, function(err) {
+var db = mongoose.connect(config.db.uri, config.db.options, function (err) {
 	if (err) {
 		console.error(chalk.red('Could not connect to MongoDB!'));
 		console.log(chalk.red(err));
+	} else {
+		console.log(chalk.green('Connected to mongo db at ' + config.db.uri));
 	}
 });
-mongoose.connection.on('error', function(err) {
-	console.error(chalk.red('MongoDB connection error: ' + err));
-	process.exit(-1);
+mongoose.connection.on('error', function (err) {
+		console.error(chalk.red('MongoDB connection error: ' + err));
+		process.exit(-1);
 	}
 );
 
@@ -32,9 +33,7 @@ var app = require('./config/express')(db);
 // Bootstrap passport config
 require('./config/passport')();
 
-// start services
-
-// Start the app by listening on <port>
+// Start the app by listening on <port>');
 app.listen(config.port);
 
 // Expose app
@@ -51,4 +50,3 @@ if (process.env.NODE_ENV === 'secure') {
 }
 console.log('--');
 
-servicesMgr.start();
